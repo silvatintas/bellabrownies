@@ -72,6 +72,17 @@
             fill: var(--secondary-pink);
             filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
         }
+        .action-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+            border-radius: 999px;
+            transition: background-color 0.2s;
+        }
+        .action-btn:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -146,8 +157,8 @@
                             <tr>
                                 <th class="p-3 text-left">Data</th>
                                 <th class="p-3 text-left">Produto</th>
-                                <th class="p-3 text-left">Qtd</th>
-                                <th class="p-3 text-left">Preço</th>
+                                <th class="p-3 text-left">Custo/g</th>
+                                <th class="p-3 text-left">Preço Total</th>
                                 <th class="p-3 text-left">Ações</th>
                             </tr>
                         </thead>
@@ -227,12 +238,14 @@
     
     <div id="compraModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-lg p-8 w-full max-w-md">
-            <h3 class="text-xl font-bold mb-4">Nova Compra</h3>
+            <h3 id="compra-modal-title" class="text-xl font-bold mb-4">Nova Compra</h3>
             <form id="compra-form">
+                <input type="hidden" id="compra-edit-id">
+                <input type="hidden" id="compra-old-price">
                 <input id="compra-data" class="w-full p-2 mb-4 border rounded input-field" type="date" required>
-                <input id="compra-produto" class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Nome do Produto/Ingrediente" required>
-                <input id="compra-quantidade" class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Quantidade (ex: 500g, 10 un)" required>
-                <input id="compra-preco" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Preço Total" required>
+                <input id="compra-produto" class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Nome do Produto (ex: Chocolate, Ovos)" required>
+                <input id="compra-preco" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Preço Total Pago (R$)" required>
+                <input id="compra-quantidade" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Qtd Total (em gramas ou unidades)" required>
                 <div class="flex justify-end gap-4">
                     <button type="button" class="px-4 py-2 rounded" onclick="closeModal('compraModal')">Cancelar</button>
                     <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
@@ -246,16 +259,16 @@
             <h3 class="text-xl font-bold mb-4">Nova Produção (1 Forma = 12 Brownies)</h3>
             <form id="producao-form">
                 <input id="producao-data" class="w-full p-2 mb-4 border rounded input-field" type="date" required>
-                <h4 class="font-semibold mb-2">Ingredientes (custo em R$):</h4>
+                <h4 class="font-semibold mb-2">Ingredientes (quantidade usada):</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <input id="producao-chocolate" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Chocolate (R$)">
-                    <input id="producao-manteiga" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Manteiga (R$)">
-                    <input id="producao-acucar" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Açúcar (R$)">
-                    <input id="producao-farinha" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Farinha (R$)">
-                    <input id="producao-ovos" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Ovos (R$)">
-                    <input id="producao-outro" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Outros Custos (R$)">
+                    <input id="producao-chocolate" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Chocolate (g)">
+                    <input id="producao-manteiga" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Manteiga (g)">
+                    <input id="producao-acucar" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Açúcar (g)">
+                    <input id="producao-farinha" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Farinha (g)">
+                    <input id="producao-ovos" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Ovos (unidades)">
+                    <input id="producao-outro" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Outros ingredientes (g)">
                 </div>
-                 <h4 class="font-semibold mb-2">Custos Adicionais:</h4>
+                 <h4 class="font-semibold mb-2">Custos Adicionais (valor em R$):</h4>
                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <input id="producao-embalagem" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Embalagem (total)">
                     <input id="producao-recheio" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Recheio (total)">
@@ -300,12 +313,25 @@
             </form>
         </div>
     </div>
+    
+    <!-- Modal de Confirmação de Exclusão -->
+    <div id="confirmDeleteModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-8 w-full max-w-sm text-center">
+            <h3 class="text-xl font-bold mb-4">Confirmar Exclusão</h3>
+            <p>Você tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.</p>
+            <div class="flex justify-center gap-4 mt-6">
+                <button type="button" class="px-4 py-2 rounded" onclick="closeModal('confirmDeleteModal')">Cancelar</button>
+                <button id="confirm-delete-btn" type="button" class="bg-red-500 text-white px-4 py-2 rounded">Excluir</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Script do Firebase -->
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, updateDoc, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
       
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -346,7 +372,13 @@
         }
 
         function formatCurrency(value) {
+            if (typeof value !== 'number') return 'R$ 0,00';
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+        
+        function formatCurrencyPerGram(value) {
+            if (typeof value !== 'number' || !isFinite(value)) return 'R$ 0,00/g';
+             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 4 }) + '/g';
         }
 
         function updateFinanceiroUI() {
@@ -387,23 +419,38 @@
         compraForm.addEventListener('submit', async (event) => {
             event.preventDefault(); 
             const preco = parseFloat(document.getElementById('compra-preco').value);
+            const quantidade = parseFloat(document.getElementById('compra-quantidade').value);
+            const custoPorUnidade = preco / quantidade;
+            const editId = document.getElementById('compra-edit-id').value;
+
+            const data = {
+                data: document.getElementById('compra-data').value,
+                produto: document.getElementById('compra-produto').value,
+                precoTotal: preco,
+                quantidadeTotal: quantidade,
+                custoPorUnidade: custoPorUnidade
+            };
 
             try {
-                await addDoc(comprasCollectionRef, {
-                    data: document.getElementById('compra-data').value,
-                    produto: document.getElementById('compra-produto').value,
-                    quantidade: document.getElementById('compra-quantidade').value,
-                    preco: preco,
-                });
+                if (editId) {
+                    // Modo Edição
+                    const oldPrice = parseFloat(document.getElementById('compra-old-price').value);
+                    const docRef = doc(db, "compras", editId);
+                    await updateDoc(docRef, data);
+                    // Ajusta financeiro: remove o preço antigo e adiciona o novo
+                    financeiro.custos = (financeiro.custos - oldPrice) + preco;
 
-                financeiro.custos += preco;
+                } else {
+                    // Modo Adição
+                    await addDoc(comprasCollectionRef, data);
+                    financeiro.custos += preco;
+                }
+                
                 await saveFinanceiroData();
                 updateFinanceiroUI();
-
-                compraForm.reset();
                 closeModal('compraModal');
             } catch (e) {
-                console.error("Erro ao adicionar compra: ", e);
+                console.error("Erro ao salvar compra: ", e);
             }
         });
 
@@ -413,18 +460,42 @@
                 let comprasHtml = '';
                 snapshot.forEach((doc) => {
                     const compra = doc.data();
+                    const docId = doc.id;
                     comprasHtml += `
                         <tr class="border-b border-gray-200">
                             <td class="p-3">${new Date(compra.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
                             <td class="p-3">${compra.produto}</td>
-                            <td class="p-3">${compra.quantidade}</td>
-                            <td class="p-3">${formatCurrency(compra.preco)}</td>
-                            <td class="p-3">...</td>
+                            <td class="p-3">${formatCurrencyPerGram(compra.custoPorUnidade)}</td>
+                            <td class="p-3">${formatCurrency(compra.precoTotal)}</td>
+                            <td class="p-3 flex gap-2">
+                                <button class="action-btn" onclick="window.openCompraEditModal('${docId}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
+                                </button>
+                                <button class="action-btn" onclick="window.requestDelete('compras', '${docId}', ${compra.precoTotal})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
+                                </button>
+                            </td>
                         </tr>
                     `;
                 });
                 comprasTableBody.innerHTML = comprasHtml;
             });
+        }
+        
+        window.openCompraEditModal = async (id) => {
+            const docRef = doc(db, "compras", id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('compra-modal-title').innerText = "Editar Compra";
+                document.getElementById('compra-edit-id').value = id;
+                document.getElementById('compra-old-price').value = data.precoTotal;
+                document.getElementById('compra-data').value = data.data;
+                document.getElementById('compra-produto').value = data.produto;
+                document.getElementById('compra-preco').value = data.precoTotal;
+                document.getElementById('compra-quantidade').value = data.quantidadeTotal;
+                openModal('compraModal');
+            }
         }
 
         // --- LÓGICA DE PRODUÇÃO ---
@@ -432,19 +503,37 @@
         const producaoTableBody = document.getElementById('producao-table-body');
         const producaoCollectionRef = collection(db, "producao");
 
+        async function getCustoIngrediente(nome, qtdUsada) {
+            if (!qtdUsada || qtdUsada <= 0) return 0;
+            const q = query(collection(db, "compras"), where("produto", "==", nome), orderBy("data", "desc"), limit(1));
+            const querySnapshot = await getDocs(q);
+            if (querySnapshot.empty) {
+                 alert(`Atenção: Não foi encontrada uma compra para "${nome}". O custo será zero.`);
+                 return 0;
+            }
+            const compraRecente = querySnapshot.docs[0].data();
+            return compraRecente.custoPorUnidade * qtdUsada;
+        }
+
         producaoForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             
-            const custoChocolate = parseFloat(document.getElementById('producao-chocolate').value) || 0;
-            const custoManteiga = parseFloat(document.getElementById('producao-manteiga').value) || 0;
-            const custoAcucar = parseFloat(document.getElementById('producao-acucar').value) || 0;
-            const custoFarinha = parseFloat(document.getElementById('producao-farinha').value) || 0;
-            const custoOvos = parseFloat(document.getElementById('producao-ovos').value) || 0;
-            const custoOutro = parseFloat(document.getElementById('producao-outro').value) || 0;
+            const qtdChocolate = parseFloat(document.getElementById('producao-chocolate').value) || 0;
+            const qtdManteiga = parseFloat(document.getElementById('producao-manteiga').value) || 0;
+            const qtdAcucar = parseFloat(document.getElementById('producao-acucar').value) || 0;
+            const qtdFarinha = parseFloat(document.getElementById('producao-farinha').value) || 0;
+            const qtdOvos = parseFloat(document.getElementById('producao-ovos').value) || 0;
+
+            const custoChocolate = await getCustoIngrediente('Chocolate', qtdChocolate);
+            const custoManteiga = await getCustoIngrediente('Manteiga', qtdManteiga);
+            const custoAcucar = await getCustoIngrediente('Açúcar', qtdAcucar);
+            const custoFarinha = await getCustoIngrediente('Farinha', qtdFarinha);
+            const custoOvos = await getCustoIngrediente('Ovos', qtdOvos);
+
             const custoEmbalagem = parseFloat(document.getElementById('producao-embalagem').value) || 0;
             const custoRecheio = parseFloat(document.getElementById('producao-recheio').value) || 0;
             
-            const custoTotalProducao = custoChocolate + custoManteiga + custoAcucar + custoFarinha + custoOvos + custoOutro + custoEmbalagem + custoRecheio;
+            const custoTotalProducao = custoChocolate + custoManteiga + custoAcucar + custoFarinha + custoOvos + custoEmbalagem + custoRecheio;
             const custoUnitario = custoTotalProducao / 12;
 
             try {
@@ -453,13 +542,13 @@
                     precoVenda: parseFloat(document.getElementById('producao-preco-venda').value),
                     perdidos: parseInt(document.getElementById('producao-perdidos').value) || 0,
                     custoUnitario: custoUnitario,
+                    custoTotal: custoTotalProducao,
                     browniesFeitos: 12
                 });
 
                 financeiro.custos += custoTotalProducao;
                 await saveFinanceiroData();
                 updateFinanceiroUI();
-
                 producaoForm.reset();
                 closeModal('producaoModal');
 
@@ -481,13 +570,43 @@
                             <td class="p-3">${formatCurrency(p.custoUnitario)}</td>
                             <td class="p-3">${formatCurrency(p.precoVenda)}</td>
                             <td class="p-3">${p.perdidos}</td>
-                            <td class="p-3">...</td>
+                            <td class="p-3 flex gap-2">
+                                <button class="action-btn" onclick="window.requestDelete('producao', '${doc.id}', ${p.custoTotal})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
+                                </button>
+                            </td>
                         </tr>
                     `;
                 });
                 producaoTableBody.innerHTML = producaoHtml;
             });
         }
+
+        // --- LÓGICA DE EXCLUSÃO ---
+        const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        let deleteInfo = {};
+
+        window.requestDelete = (collectionName, docId, cost) => {
+            deleteInfo = { collectionName, docId, cost };
+            openModal('confirmDeleteModal');
+        };
+
+        confirmDeleteBtn.addEventListener('click', async () => {
+            const { collectionName, docId, cost } = deleteInfo;
+            if (!collectionName || !docId) return;
+
+            try {
+                await deleteDoc(doc(db, collectionName, docId));
+                if (cost) {
+                    financeiro.custos -= cost;
+                    await saveFinanceiroData();
+                    updateFinanceiroUI();
+                }
+                closeModal('confirmDeleteModal');
+            } catch (e) {
+                console.error("Erro ao excluir: ", e);
+            }
+        });
 
         // --- INICIALIZAÇÃO ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -506,6 +625,13 @@
         }
 
         window.openModal = function(modalId) {
+            if (modalId === 'compraModal') {
+                // Reseta o formulário de compra para o modo "Adicionar"
+                document.getElementById('compra-modal-title').innerText = "Nova Compra";
+                document.getElementById('compra-form').reset();
+                document.getElementById('compra-edit-id').value = '';
+                document.getElementById('compra-old-price').value = '';
+            }
             const modal = document.getElementById(modalId);
             modal.classList.remove('hidden');
             modal.classList.add('flex');
