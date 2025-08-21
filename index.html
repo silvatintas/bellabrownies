@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <!-- Meta tag essencial para responsividade em celulares -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bella Brownies - Controle</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -101,9 +102,9 @@
         <header class="text-center mb-8">
             <div class="relative inline-block">
                  <svg class="bow-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M17.5,15.5c-1.04,1.04-2.43,1.62-3.89,1.62 s-2.85-0.58-3.89-1.62C8.68,14.46,8,13.28,8,12c0-1.28,0.68-2.46,1.72-3.5C10.76,7.46,12.15,6.88,13.61,6.88 s2.85,0.58,3.89,1.62c1.04,1.04,1.72,2.22,1.72,3.5C19.22,13.28,18.54,14.46,17.5,15.5z M13.61,8.88c-0.83,0-1.5,0.67-1.5,1.5 s0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5S14.44,8.88,13.61,8.88z M10.61,11.88c-0.83,0-1.5,0.67-1.5,1.5s0.67,1.5,1.5,1.5 s1.5-0.67,1.5-1.5S11.44,11.88,10.61,11.88z"/></svg>
-                <h1 class="font-parisienne bow-logo text-6xl md:text-8xl">Bella</h1>
+                <h1 class="font-parisienne bow-logo text-5xl sm:text-6xl md:text-7xl">Bella</h1>
             </div>
-            <p class="font-parisienne text-4xl md:text-5xl -mt-4 text-white" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">brownies</p>
+            <p class="font-parisienne text-3xl sm:text-4xl md:text-5xl -mt-4 text-white" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">brownies</p>
         </header>
 
         <!-- Navegação das Abas -->
@@ -116,7 +117,7 @@
         </div>
 
         <!-- Conteúdo das Abas -->
-        <main id="tab-content" class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
+        <main id="tab-content" class="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl shadow-lg">
             
             <!-- Aba de Vendas -->
             <div id="vendas" class="tab-panel">
@@ -126,8 +127,8 @@
                         <thead class="table-header">
                             <tr>
                                 <th class="p-3 text-left">Cliente</th>
-                                <th class="p-3 text-left">Quantidade</th>
-                                <th class="p-3 text-left">Pagamento</th>
+                                <th class="p-3 text-left">Qtd</th>
+                                <th class="p-3 text-left">Pgto</th>
                                 <th class="p-3 text-left">Total</th>
                                 <th class="p-3 text-left">Ações</th>
                             </tr>
@@ -164,12 +165,14 @@
                             <tr>
                                 <th class="p-3 text-left">Data</th>
                                 <th class="p-3 text-left">Produto</th>
-                                <th class="p-3 text-left">Quantidade</th>
+                                <th class="p-3 text-left">Qtd</th>
                                 <th class="p-3 text-left">Preço</th>
                                 <th class="p-3 text-left">Ações</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody id="compras-table-body">
+                            <!-- Dados das compras serão inseridos aqui -->
+                        </tbody>
                     </table>
                 </div>
                 <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('compraModal')">Adicionar Compra</button>
@@ -183,9 +186,9 @@
                         <thead class="table-header">
                             <tr>
                                 <th class="p-3 text-left">Data</th>
-                                <th class="p-3 text-left">Brownies Feitos</th>
-                                <th class="p-3 text-left">Custo/Unid.</th>
-                                <th class="p-3 text-left">Preço Venda</th>
+                                <th class="p-3 text-left">Feitos</th>
+                                <th class="p-3 text-left">Custo/Un</th>
+                                <th class="p-3 text-left">Venda</th>
                                 <th class="p-3 text-left">Perdidos</th>
                                 <th class="p-3 text-left">Ações</th>
                             </tr>
@@ -199,7 +202,7 @@
             <!-- Aba Financeiro -->
             <div id="financeiro" class="tab-panel hidden">
                 <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle Financeiro</h2>
-                <div class="grid md:grid-cols-3 gap-4 text-center">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                     <div class="bg-white/90 p-4 rounded-lg shadow">
                         <h3 class="text-lg font-semibold text-accent-brown">Caixa Atual</h3>
                         <p id="caixa-atual" class="text-2xl font-bold">R$ 0,00</p>
@@ -244,11 +247,11 @@
     <div id="compraModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-lg p-8 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Nova Compra</h3>
-            <form>
-                <input class="w-full p-2 mb-4 border rounded input-field" type="date">
-                <input class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Nome do Produto/Ingrediente">
-                <input class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Quantidade (ex: 500g, 10 un)">
-                <input class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Preço Total">
+            <form id="compra-form">
+                <input id="compra-data" class="w-full p-2 mb-4 border rounded input-field" type="date" required>
+                <input id="compra-produto" class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Nome do Produto/Ingrediente" required>
+                <input id="compra-quantidade" class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Quantidade (ex: 500g, 10 un)" required>
+                <input id="compra-preco" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Preço Total" required>
                 <div class="flex justify-end gap-4">
                     <button type="button" class="px-4 py-2 rounded" onclick="closeModal('compraModal')">Cancelar</button>
                     <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
@@ -263,7 +266,7 @@
             <form>
                 <input class="w-full p-2 mb-4 border rounded input-field" type="date">
                 <h4 class="font-semibold mb-2">Ingredientes (em gramas):</h4>
-                <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <input class="w-full p-2 border rounded input-field" type="number" placeholder="Chocolate (g)">
                     <input class="w-full p-2 border rounded input-field" type="number" placeholder="Manteiga (g)">
                     <input class="w-full p-2 border rounded input-field" type="number" placeholder="Açúcar (g)">
@@ -272,12 +275,12 @@
                     <input class="w-full p-2 border rounded input-field" type="text" placeholder="Outro Ingrediente (g)">
                 </div>
                  <h4 class="font-semibold mb-2">Custos Adicionais:</h4>
-                 <div class="grid grid-cols-2 gap-4 mb-4">
+                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <input class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Embalagem (un)">
                     <input class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Recheio (total)">
                  </div>
                  <h4 class="font-semibold mb-2">Preço e Perdas:</h4>
-                 <div class="grid grid-cols-2 gap-4 mb-4">
+                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <input class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Preço de Venda (un)">
                     <input class="w-full p-2 border rounded input-field" type="number" placeholder="Brownies Perdidos (un)">
                  </div>
@@ -321,7 +324,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
       
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -352,7 +355,8 @@
             if (user === 'Admin' && pass === '03032023') {
                 loginScreen.classList.add('hidden');
                 appContent.classList.remove('hidden');
-                loadFinanceiroData(); // Carrega os dados após o login
+                loadFinanceiroData(); 
+                listenToCompras(); // Inicia o listener de compras
             } else {
                 loginError.textContent = 'Login ou senha inválidos.';
                 setTimeout(() => { loginError.textContent = '' }, 3000);
@@ -360,14 +364,8 @@
         });
 
         // --- LÓGICA FINANCEIRA COM FIREBASE ---
-        let financeiro = {
-            caixa: 0,
-            vendas: 0,
-            custos: 0
-        };
-
+        let financeiro = { caixa: 0, vendas: 0, custos: 0 };
         const financeiroDocRef = doc(db, "bella-brownies", "financeiro");
-
         const caixaEl = document.getElementById('caixa-atual');
         const vendasEl = document.getElementById('total-vendas');
         const custosEl = document.getElementById('custos-totais');
@@ -379,7 +377,6 @@
             if (docSnap.exists()) {
                 financeiro = docSnap.data();
             } else {
-                // Se o documento não existe, cria com valores iniciais
                 await setDoc(financeiroDocRef, financeiro);
             }
             updateFinanceiroUI();
@@ -422,6 +419,55 @@
                 retiradaForm.reset();
             }
         });
+
+        // --- LÓGICA DE COMPRAS ---
+        const compraForm = document.getElementById('compra-form');
+        const comprasTableBody = document.getElementById('compras-table-body');
+        const comprasCollectionRef = collection(db, "compras");
+
+        compraForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Impede o recarregamento da página
+            const preco = parseFloat(document.getElementById('compra-preco').value);
+
+            try {
+                await addDoc(comprasCollectionRef, {
+                    data: document.getElementById('compra-data').value,
+                    produto: document.getElementById('compra-produto').value,
+                    quantidade: document.getElementById('compra-quantidade').value,
+                    preco: preco,
+                });
+
+                // Atualiza os custos no financeiro
+                financeiro.custos += preco;
+                await saveFinanceiroData();
+                updateFinanceiroUI();
+
+                compraForm.reset();
+                closeModal('compraModal');
+            } catch (e) {
+                console.error("Erro ao adicionar compra: ", e);
+            }
+        });
+
+        function listenToCompras() {
+            const q = query(comprasCollectionRef, orderBy("data", "desc"));
+            onSnapshot(q, (snapshot) => {
+                let comprasHtml = '';
+                snapshot.forEach((doc) => {
+                    const compra = doc.data();
+                    comprasHtml += `
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3">${new Date(compra.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                            <td class="p-3">${compra.produto}</td>
+                            <td class="p-3">${compra.quantidade}</td>
+                            <td class="p-3">${formatCurrency(compra.preco)}</td>
+                            <td class="p-3">...</td>
+                        </tr>
+                    `;
+                });
+                comprasTableBody.innerHTML = comprasHtml;
+            });
+        }
 
 
         // --- LÓGICA GERAL (ABAS E MODAIS) ---
