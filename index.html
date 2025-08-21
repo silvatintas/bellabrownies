@@ -102,6 +102,7 @@
         <!-- Navegação das Abas -->
         <div class="flex flex-wrap justify-center gap-2 mb-8">
             <button class="tab-button active px-4 py-2 rounded-lg font-semibold" onclick="openTab('vendas')">Vendas</button>
+            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('estoque')">Estoque</button>
             <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('a-prazo')">A Prazo</button>
             <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('compras')">Compras</button>
             <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('producao')">Produção</button>
@@ -130,6 +131,28 @@
                     </table>
                 </div>
                 <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('vendaModal')">Adicionar Venda</button>
+            </div>
+
+            <!-- Aba de Estoque -->
+            <div id="estoque" class="tab-panel hidden">
+                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle de Estoque</h2>
+                <div class="bg-white/90 p-6 rounded-lg shadow text-center mb-6">
+                    <h3 class="text-lg font-semibold text-accent-brown">Brownies Disponíveis</h3>
+                    <p id="estoque-total" class="text-5xl font-bold">0</p>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-accent-brown">Produções em Estoque</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-3 text-left">Data</th>
+                                <th class="p-3 text-left">Nome da Produção</th>
+                                <th class="p-3 text-left">Qtd. Restante</th>
+                            </tr>
+                        </thead>
+                        <tbody id="estoque-table-body"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Aba a Prazo -->
@@ -177,6 +200,7 @@
                         <thead class="table-header">
                             <tr>
                                 <th class="p-3 text-left">Data</th>
+                                <th class="p-3 text-left">Nome</th>
                                 <th class="p-3 text-left">Feitos</th>
                                 <th class="p-3 text-left">Custo/Un</th>
                                 <th class="p-3 text-left">Venda</th>
@@ -268,6 +292,7 @@
                 <input type="hidden" id="producao-edit-id">
                 <input type="hidden" id="producao-old-cost">
                 <input id="producao-data" class="w-full p-2 mb-4 border rounded input-field" type="date" required>
+                <input id="producao-nome" class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Nome da Produção (ex: Fornada de Sábado)" required>
                 <h4 class="font-semibold mb-2">Ingredientes (quantidade usada):</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <input id="producao-chocolate" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Chocolate (g)">
@@ -275,12 +300,12 @@
                     <input id="producao-acucar" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Açúcar (g)">
                     <input id="producao-farinha" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Farinha (g)">
                     <input id="producao-ovos" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Ovos (unidades)">
-                    <input id="producao-outro" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Outros ingredientes (g)">
+                    <input id="producao-embalagem" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Embalagens (unidades)">
                 </div>
                  <h4 class="font-semibold mb-2">Custos Adicionais (valor em R$):</h4>
                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <input id="producao-embalagem" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Embalagem (total)">
                     <input id="producao-recheio" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Recheio (total)">
+                    <input id="producao-outro" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Outros Custos (R$)">
                  </div>
                  <h4 class="font-semibold mb-2">Preço e Perdas:</h4>
                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -340,7 +365,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, updateDoc, where, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, updateDoc, where, limit, getDocs, collectionGroup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
       
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -532,7 +557,7 @@
                 { nome: 'Açúcar', qtd: parseFloat(document.getElementById('producao-acucar').value) || 0 },
                 { nome: 'Farinha', qtd: parseFloat(document.getElementById('producao-farinha').value) || 0 },
                 { nome: 'Ovos', qtd: parseFloat(document.getElementById('producao-ovos').value) || 0 },
-                { nome: 'Outro', qtd: parseFloat(document.getElementById('producao-outro').value) || 0 }
+                { nome: 'Embalagem', qtd: parseFloat(document.getElementById('producao-embalagem').value) || 0 }
             ];
 
             let custoIngredientes = 0;
@@ -540,19 +565,21 @@
                 custoIngredientes += await getCustoIngrediente(ing.nome, ing.qtd);
             }
 
-            const custoEmbalagem = parseFloat(document.getElementById('producao-embalagem').value) || 0;
             const custoRecheio = parseFloat(document.getElementById('producao-recheio').value) || 0;
-            const custoTotalProducao = custoIngredientes + custoEmbalagem + custoRecheio;
+            const custoOutro = parseFloat(document.getElementById('producao-outro').value) || 0;
+            const custoTotalProducao = custoIngredientes + custoRecheio + custoOutro;
             const custoUnitario = custoTotalProducao / 12;
 
             const data = {
                 data: document.getElementById('producao-data').value,
+                nome: document.getElementById('producao-nome').value,
                 precoVenda: parseFloat(document.getElementById('producao-preco-venda').value),
                 perdidos: parseInt(document.getElementById('producao-perdidos').value) || 0,
                 custoUnitario: custoUnitario,
                 custoTotal: custoTotalProducao,
                 browniesFeitos: 12,
-                ingredientesUsados: ingredientes // Salva os ingredientes para edição
+                ingredientesUsados: ingredientes,
+                custosAdicionais: { recheio: custoRecheio, outro: custoOutro }
             };
 
             try {
@@ -583,6 +610,7 @@
                     producaoHtml += `
                         <tr class="border-b border-gray-200">
                             <td class="p-3">${new Date(p.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                            <td class="p-3">${p.nome}</td>
                             <td class="p-3">${p.browniesFeitos}</td>
                             <td class="p-3">${formatCurrency(p.custoUnitario)}</td>
                             <td class="p-3">${formatCurrency(p.precoVenda)}</td>
@@ -611,12 +639,13 @@
                 document.getElementById('producao-edit-id').value = id;
                 document.getElementById('producao-old-cost').value = p.custoTotal;
                 document.getElementById('producao-data').value = p.data;
+                document.getElementById('producao-nome').value = p.nome;
                 p.ingredientesUsados.forEach(ing => {
                     const el = document.getElementById(`producao-${ing.nome.toLowerCase()}`);
                     if(el) el.value = ing.qtd;
                 });
-                document.getElementById('producao-embalagem').value = p.custoEmbalagem || '';
-                document.getElementById('producao-recheio').value = p.custoRecheio || '';
+                document.getElementById('producao-recheio').value = p.custosAdicionais.recheio || '';
+                document.getElementById('producao-outro').value = p.custosAdicionais.outro || '';
                 document.getElementById('producao-preco-venda').value = p.precoVenda;
                 document.getElementById('producao-perdidos').value = p.perdidos;
                 openModal('producaoModal');
@@ -648,11 +677,9 @@
                     const oldTotal = parseFloat(document.getElementById('venda-old-total').value);
                     const oldPagamento = document.getElementById('venda-old-pagamento').value;
                     
-                    // Reverte o valor antigo
                     financeiro.vendas -= oldTotal;
                     if (oldPagamento !== 'A Prazo') financeiro.caixa -= oldTotal;
 
-                    // Adiciona o valor novo
                     financeiro.vendas += total;
                     if (pagamento !== 'A Prazo') financeiro.caixa += total;
                     
@@ -721,6 +748,42 @@
             }
         };
 
+        // --- LÓGICA DE ESTOQUE ---
+        async function updateEstoque() {
+            const producaoSnapshot = await getDocs(collection(db, "producao"));
+            let totalProduzido = 0;
+            let totalPerdido = 0;
+            producaoSnapshot.forEach(doc => {
+                totalProduzido += doc.data().browniesFeitos;
+                totalPerdido += doc.data().perdidos;
+            });
+
+            const vendasSnapshot = await getDocs(collection(db, "vendas"));
+            let totalVendido = 0;
+            vendasSnapshot.forEach(doc => {
+                totalVendido += doc.data().quantidade;
+            });
+
+            const estoqueAtual = totalProduzido - totalPerdido - totalVendido;
+            document.getElementById('estoque-total').innerText = estoqueAtual;
+
+            // Tabela de estoque por produção (simplificado)
+            let estoqueHtml = '';
+            producaoSnapshot.docs.sort((a,b) => new Date(b.data().data) - new Date(a.data().data)).forEach(doc => {
+                const p = doc.data();
+                // Esta é uma simplificação. Um sistema FIFO real seria mais complexo.
+                // Por enquanto, apenas listamos as produções.
+                 estoqueHtml += `
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3">${new Date(p.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                            <td class="p-3">${p.nome}</td>
+                            <td class="p-3">${p.browniesFeitos - p.perdidos} (Disponíveis desta fornada)</td>
+                        </tr>
+                    `;
+            });
+            document.getElementById('estoque-table-body').innerHTML = estoqueHtml;
+        }
+
 
         // --- LÓGICA DE EXCLUSÃO ---
         const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
@@ -760,6 +823,8 @@
             listenToCompras();
             listenToProducao();
             listenToVendas();
+            onSnapshot(collectionGroup(db, 'vendas'), updateEstoque);
+            onSnapshot(collectionGroup(db, 'producao'), updateEstoque);
         });
 
 
