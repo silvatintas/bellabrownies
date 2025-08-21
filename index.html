@@ -534,6 +534,15 @@
         const producaoForm = document.getElementById('producao-form');
         const producaoTableBody = document.getElementById('producao-table-body');
         const producaoCollectionRef = collection(db, "producao");
+        
+        const INGREDIENTES_MAP = {
+            chocolate: { queryName: 'Chocolate', id: 'producao-chocolate' },
+            manteiga:  { queryName: 'Manteiga',  id: 'producao-manteiga' },
+            acucar:    { queryName: 'Açúcar',    id: 'producao-acucar' },
+            farinha:   { queryName: 'Farinha',   id: 'producao-farinha' },
+            ovos:      { queryName: 'Ovos',      id: 'producao-ovos' },
+            embalagem: { queryName: 'Embalagem', id: 'producao-embalagem' }
+        };
 
         async function getCustoIngrediente(nome, qtdUsada) {
             if (!nome || !qtdUsada || qtdUsada <= 0) return 0;
@@ -551,18 +560,16 @@
             event.preventDefault();
             const editId = document.getElementById('producao-edit-id').value;
             
-            const ingredientes = [
-                { nome: 'Chocolate', qtd: parseFloat(document.getElementById('producao-chocolate').value) || 0 },
-                { nome: 'Manteiga', qtd: parseFloat(document.getElementById('producao-manteiga').value) || 0 },
-                { nome: 'Açúcar', qtd: parseFloat(document.getElementById('producao-acucar').value) || 0 },
-                { nome: 'Farinha', qtd: parseFloat(document.getElementById('producao-farinha').value) || 0 },
-                { nome: 'Ovos', qtd: parseFloat(document.getElementById('producao-ovos').value) || 0 },
-                { nome: 'Embalagem', qtd: parseFloat(document.getElementById('producao-embalagem').value) || 0 }
-            ];
-
             let custoIngredientes = 0;
-            for (const ing of ingredientes) {
-                custoIngredientes += await getCustoIngrediente(ing.nome, ing.qtd);
+            const ingredientesUsados = [];
+
+            for (const key in INGREDIENTES_MAP) {
+                const ing = INGREDIENTES_MAP[key];
+                const qtd = parseFloat(document.getElementById(ing.id).value) || 0;
+                if (qtd > 0) {
+                    custoIngredientes += await getCustoIngrediente(ing.queryName, qtd);
+                    ingredientesUsados.push({ nome: key, qtd: qtd, queryName: ing.queryName });
+                }
             }
 
             const custoRecheio = parseFloat(document.getElementById('producao-recheio').value) || 0;
@@ -578,7 +585,7 @@
                 custoUnitario: custoUnitario,
                 custoTotal: custoTotalProducao,
                 browniesFeitos: 12,
-                ingredientesUsados: ingredientes,
+                ingredientesUsados: ingredientesUsados,
                 custosAdicionais: { recheio: custoRecheio, outro: custoOutro }
             };
 
@@ -641,8 +648,11 @@
                 document.getElementById('producao-data').value = p.data;
                 document.getElementById('producao-nome').value = p.nome;
                 p.ingredientesUsados.forEach(ing => {
-                    const el = document.getElementById(`producao-${ing.nome.toLowerCase()}`);
-                    if(el) el.value = ing.qtd;
+                    const ingMap = INGREDIENTES_MAP[ing.nome];
+                    if(ingMap) {
+                        const el = document.getElementById(ingMap.id);
+                        if (el) el.value = ing.qtd;
+                    }
                 });
                 document.getElementById('producao-recheio').value = p.custosAdicionais.recheio || '';
                 document.getElementById('producao-outro').value = p.custosAdicionais.outro || '';
