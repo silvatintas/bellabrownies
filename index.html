@@ -546,13 +546,20 @@
 
         async function getCustoIngrediente(nome, qtdUsada) {
             if (!nome || !qtdUsada || qtdUsada <= 0) return 0;
-            const q = query(collection(db, "compras"), where("produto", "==", nome), orderBy("data", "desc"), limit(1));
+            // FIX: Query without composite index. Filter first, then sort client-side.
+            const q = query(collection(db, "compras"), where("produto", "==", nome));
             const querySnapshot = await getDocs(q);
+
             if (querySnapshot.empty) {
                  alert(`Atenção: Não foi encontrada uma compra para "${nome}" para calcular o custo. O valor será zero.`);
                  return 0;
             }
-            const compraRecente = querySnapshot.docs[0].data();
+            
+            // Sort results in JS to find the most recent purchase
+            const compras = querySnapshot.docs.map(doc => doc.data());
+            compras.sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            const compraRecente = compras[0];
             return compraRecente.custoPorUnidade * qtdUsada;
         }
 
@@ -567,7 +574,8 @@
                 const ing = INGREDIENTES_MAP[key];
                 const qtd = parseFloat(document.getElementById(ing.id).value) || 0;
                 if (qtd > 0) {
-                    custoIngredientes += await getCustoIngrediente(ing.queryName, qtd);
+                    const custo = await getCustoIngrediente(ing.queryName, qtd);
+                    custoIngredientes += custo;
                     ingredientesUsados.push({ nome: key, qtd: qtd, queryName: ing.queryName });
                 }
             }
