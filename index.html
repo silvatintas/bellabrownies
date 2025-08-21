@@ -387,7 +387,7 @@
         const db = getFirestore(app);
 
         // --- LÓGICA FINANCEIRA COM FIREBASE ---
-        let financeiro = { caixa: 0, vendas: 0, custos: 0 };
+        let financeiro = { caixa: 525, vendas: 0, custos: 0 };
         const financeiroDocRef = doc(db, "bella-brownies", "financeiro");
         const caixaEl = document.getElementById('caixa-atual');
         const vendasEl = document.getElementById('total-vendas');
