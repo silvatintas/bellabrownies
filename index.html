@@ -217,7 +217,7 @@
             <!-- Aba Financeiro -->
             <div id="financeiro" class="tab-panel hidden">
                 <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle Financeiro</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
                     <div class="bg-white/90 p-4 rounded-lg shadow">
                         <h3 class="text-lg font-semibold text-accent-brown">Caixa Atual</h3>
                         <p id="caixa-atual" class="text-2xl font-bold">R$ 0,00</p>
@@ -229,6 +229,10 @@
                     <div class="bg-white/90 p-4 rounded-lg shadow">
                         <h3 class="text-lg font-semibold text-accent-brown">Custos Totais</h3>
                         <p id="custos-totais" class="text-2xl font-bold">R$ 0,00</p>
+                    </div>
+                    <div class="bg-white/90 p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-green-700">Lucro Total</h3>
+                        <p id="lucro-total" class="text-2xl font-bold text-green-600">R$ 0,00</p>
                     </div>
                 </div>
                  <div class="mt-6">
@@ -388,6 +392,7 @@
         const caixaEl = document.getElementById('caixa-atual');
         const vendasEl = document.getElementById('total-vendas');
         const custosEl = document.getElementById('custos-totais');
+        const lucroEl = document.getElementById('lucro-total');
         const entradaForm = document.getElementById('entrada-form');
         const retiradaForm = document.getElementById('retirada-form');
 
@@ -416,9 +421,11 @@
         }
 
         function updateFinanceiroUI() {
+            const lucro = financeiro.vendas - financeiro.custos;
             caixaEl.textContent = formatCurrency(financeiro.caixa);
             vendasEl.textContent = formatCurrency(financeiro.vendas);
             custosEl.textContent = formatCurrency(financeiro.custos);
+            lucroEl.textContent = formatCurrency(lucro);
         }
         
         entradaForm.addEventListener('submit', async function(event) {
@@ -546,7 +553,6 @@
 
         async function getCustoIngrediente(nome, qtdUsada) {
             if (!nome || !qtdUsada || qtdUsada <= 0) return 0;
-            // FIX: Query without composite index. Filter first, then sort client-side.
             const q = query(collection(db, "compras"), where("produto", "==", nome));
             const querySnapshot = await getDocs(q);
 
@@ -555,7 +561,6 @@
                  return 0;
             }
             
-            // Sort results in JS to find the most recent purchase
             const compras = querySnapshot.docs.map(doc => doc.data());
             compras.sort((a, b) => new Date(b.data) - new Date(a.data));
             
