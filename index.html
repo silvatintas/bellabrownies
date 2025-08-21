@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Brownies - Controle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #FADADD;
+            --secondary-pink: #FFB6C1;
+            --accent-brown: #6B4226;
+            --white: #FFFFFF;
+            --text-dark: #3D2314;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-pink);
+            color: var(--text-dark);
+        }
+        .font-parisienne {
+            font-family: 'Parisienne', cursive;
+        }
+        .tab-button.active {
+            background-color: var(--accent-brown);
+            color: var(--white);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .table-header {
+            background-color: var(--secondary-pink);
+        }
+        .btn-primary {
+            background-color: var(--accent-brown);
+            color: var(--white);
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #855a3f;
+        }
+        .input-field {
+            border-color: var(--secondary-pink);
+        }
+        .input-field:focus {
+            border-color: var(--accent-brown);
+            ring: 1;
+            ring-color: var(--accent-brown);
+        }
+        /* Estilo do lacinho */
+        .bow-logo {
+            position: relative;
+            display: inline-block;
+            font-size: 5rem; /* Ajuste o tamanho conforme necessário */
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .bow-svg {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-15deg);
+            width: 80px;
+            height: 80px;
+            fill: var(--secondary-pink);
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Tela de Login -->
+    <div id="login-screen" class="fixed inset-0 bg-primary-pink flex items-center justify-center p-4 z-50">
+        <div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg w-full max-w-sm text-center">
+             <header class="text-center mb-6">
+                <div class="relative inline-block">
+                     <svg class="bow-svg" style="width:60px; height:60px; top:-20px; fill: var(--primary-pink);" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M17.5,15.5c-1.04,1.04-2.43,1.62-3.89,1.62 s-2.85-0.58-3.89-1.62C8.68,14.46,8,13.28,8,12c0-1.28,0.68-2.46,1.72-3.5C10.76,7.46,12.15,6.88,13.61,6.88 s2.85,0.58,3.89,1.62c1.04,1.04,1.72,2.22,1.72,3.5C19.22,13.28,18.54,14.46,17.5,15.5z M13.61,8.88c-0.83,0-1.5,0.67-1.5,1.5 s0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5S14.44,8.88,13.61,8.88z M10.61,11.88c-0.83,0-1.5,0.67-1.5,1.5s0.67,1.5,1.5,1.5 s1.5-0.67,1.5-1.5S11.44,11.88,10.61,11.88z"/></svg>
+                    <h1 class="font-parisienne bow-logo text-5xl !text-accent-brown" style="text-shadow: none;">Bella</h1>
+                </div>
+                <p class="font-parisienne text-3xl -mt-4 text-accent-brown">brownies</p>
+            </header>
+            <form id="login-form">
+                <input id="loginUser" class="w-full p-3 mb-4 border rounded input-field" type="text" placeholder="Login" required>
+                <input id="loginPass" class="w-full p-3 mb-4 border rounded input-field" type="password" placeholder="Senha" required>
+                <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold">Entrar</button>
+                <p id="login-error" class="text-red-500 mt-4 h-4"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal do App -->
+    <div id="app-content" class="container mx-auto p-4 sm:p-6 lg:p-8 hidden">
+
+        <!-- Cabeçalho -->
+        <header class="text-center mb-8">
+            <div class="relative inline-block">
+                 <svg class="bow-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M17.5,15.5c-1.04,1.04-2.43,1.62-3.89,1.62 s-2.85-0.58-3.89-1.62C8.68,14.46,8,13.28,8,12c0-1.28,0.68-2.46,1.72-3.5C10.76,7.46,12.15,6.88,13.61,6.88 s2.85,0.58,3.89,1.62c1.04,1.04,1.72,2.22,1.72,3.5C19.22,13.28,18.54,14.46,17.5,15.5z M13.61,8.88c-0.83,0-1.5,0.67-1.5,1.5 s0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5S14.44,8.88,13.61,8.88z M10.61,11.88c-0.83,0-1.5,0.67-1.5,1.5s0.67,1.5,1.5,1.5 s1.5-0.67,1.5-1.5S11.44,11.88,10.61,11.88z"/></svg>
+                <h1 class="font-parisienne bow-logo text-6xl md:text-8xl">Bella</h1>
+            </div>
+            <p class="font-parisienne text-4xl md:text-5xl -mt-4 text-white" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">brownies</p>
+        </header>
+
+        <!-- Navegação das Abas -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <button class="tab-button active px-4 py-2 rounded-lg font-semibold" onclick="openTab('vendas')">Vendas</button>
+            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('a-prazo')">A Prazo</button>
+            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('compras')">Compras</button>
+            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('producao')">Produção</button>
+            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('financeiro')">Financeiro</button>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <main id="tab-content" class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
+            
+            <!-- Aba de Vendas -->
+            <div id="vendas" class="tab-panel">
+                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Registro de Vendas</h2>
+                 <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-3 text-left">Cliente</th>
+                                <th class="p-3 text-left">Quantidade</th>
+                                <th class="p-3 text-left">Pagamento</th>
+                                <th class="p-3 text-left">Total</th>
+                                <th class="p-3 text-left">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('vendaModal')">Adicionar Venda</button>
+            </div>
+
+            <!-- Aba a Prazo -->
+            <div id="a-prazo" class="tab-panel hidden">
+                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Clientes a Prazo</h2>
+                 <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-3 text-left">Cliente</th>
+                                <th class="p-3 text-left">Valor Devido</th>
+                                <th class="p-3 text-left">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Aba de Compras -->
+            <div id="compras" class="tab-panel hidden">
+                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Registro de Compras</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-3 text-left">Data</th>
+                                <th class="p-3 text-left">Produto</th>
+                                <th class="p-3 text-left">Quantidade</th>
+                                <th class="p-3 text-left">Preço</th>
+                                <th class="p-3 text-left">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('compraModal')">Adicionar Compra</button>
+            </div>
+
+            <!-- Aba de Produção -->
+            <div id="producao" class="tab-panel hidden">
+                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle de Produção</h2>
+                 <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-3 text-left">Data</th>
+                                <th class="p-3 text-left">Brownies Feitos</th>
+                                <th class="p-3 text-left">Custo/Unid.</th>
+                                <th class="p-3 text-left">Preço Venda</th>
+                                <th class="p-3 text-left">Perdidos</th>
+                                <th class="p-3 text-left">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('producaoModal')">Nova Produção</button>
+            </div>
+
+            <!-- Aba Financeiro -->
+            <div id="financeiro" class="tab-panel hidden">
+                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle Financeiro</h2>
+                <div class="grid md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-white/90 p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-accent-brown">Caixa Atual</h3>
+                        <p id="caixa-atual" class="text-2xl font-bold">R$ 0,00</p>
+                    </div>
+                    <div class="bg-white/90 p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-accent-brown">Total de Vendas</h3>
+                        <p id="total-vendas" class="text-2xl font-bold">R$ 0,00</p>
+                    </div>
+                    <div class="bg-white/90 p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-accent-brown">Custos Totais</h3>
+                        <p id="custos-totais" class="text-2xl font-bold">R$ 0,00</p>
+                    </div>
+                </div>
+                 <div class="mt-6">
+                    <button class="btn-primary px-4 py-2 rounded-lg" onclick="openModal('entradaModal')">Adicionar Entrada</button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg ml-2" onclick="openModal('retiradaModal')">Registrar Retirada</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modais -->
+    <div id="vendaModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-8 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Nova Venda</h3>
+            <form>
+                <input class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Nome do Cliente">
+                <input class="w-full p-2 mb-4 border rounded input-field" type="number" placeholder="Quantidade de Brownies">
+                <select class="w-full p-2 mb-4 border rounded input-field">
+                    <option>Dinheiro</option>
+                    <option>Pix</option>
+                    <option>A Prazo</option>
+                </select>
+                <div class="flex justify-end gap-4">
+                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('vendaModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="compraModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-8 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Nova Compra</h3>
+            <form>
+                <input class="w-full p-2 mb-4 border rounded input-field" type="date">
+                <input class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Nome do Produto/Ingrediente">
+                <input class="w-full p-2 mb-4 border rounded input-field" type="text" placeholder="Quantidade (ex: 500g, 10 un)">
+                <input class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Preço Total">
+                <div class="flex justify-end gap-4">
+                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('compraModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="producaoModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-8 w-full max-w-lg">
+            <h3 class="text-xl font-bold mb-4">Nova Produção (1 Forma = 12 Brownies)</h3>
+            <form>
+                <input class="w-full p-2 mb-4 border rounded input-field" type="date">
+                <h4 class="font-semibold mb-2">Ingredientes (em gramas):</h4>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <input class="w-full p-2 border rounded input-field" type="number" placeholder="Chocolate (g)">
+                    <input class="w-full p-2 border rounded input-field" type="number" placeholder="Manteiga (g)">
+                    <input class="w-full p-2 border rounded input-field" type="number" placeholder="Açúcar (g)">
+                    <input class="w-full p-2 border rounded input-field" type="number" placeholder="Farinha (g)">
+                    <input class="w-full p-2 border rounded input-field" type="number" placeholder="Ovos (un)">
+                    <input class="w-full p-2 border rounded input-field" type="text" placeholder="Outro Ingrediente (g)">
+                </div>
+                 <h4 class="font-semibold mb-2">Custos Adicionais:</h4>
+                 <div class="grid grid-cols-2 gap-4 mb-4">
+                    <input class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Embalagem (un)">
+                    <input class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Recheio (total)">
+                 </div>
+                 <h4 class="font-semibold mb-2">Preço e Perdas:</h4>
+                 <div class="grid grid-cols-2 gap-4 mb-4">
+                    <input class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Preço de Venda (un)">
+                    <input class="w-full p-2 border rounded input-field" type="number" placeholder="Brownies Perdidos (un)">
+                 </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('producaoModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary px-4 py-2 rounded">Finalizar Produção</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Entrada Financeira -->
+    <div id="entradaModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-8 w-full max-w-sm">
+            <h3 class="text-xl font-bold mb-4">Adicionar Entrada no Caixa</h3>
+            <form id="entrada-form">
+                <input id="entrada-valor" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Valor da Entrada" required>
+                <div class="flex justify-end gap-4">
+                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('entradaModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Retirada Financeira -->
+    <div id="retiradaModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-8 w-full max-w-sm">
+            <h3 class="text-xl font-bold mb-4">Registrar Retirada do Caixa</h3>
+            <form id="retirada-form">
+                <input id="retirada-valor" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Valor da Retirada" required>
+                <div class="flex justify-end gap-4">
+                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('retiradaModal')">Cancelar</button>
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script do Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDPisgGzruxqnXzf9hPlb05uCN3hMozt2s",
+          authDomain: "crm-silva-tintas.firebaseapp.com",
+          projectId: "crm-silva-tintas",
+          storageBucket: "crm-silva-tintas.firebasestorage.app",
+          messagingSenderId: "37152653096",
+          appId: "1:37152653096:web:e84f095a5d364214abda1d",
+          measurementId: "G-GNBVRGLZG2"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- LÓGICA DE LOGIN ---
+        const loginForm = document.getElementById('login-form');
+        const loginScreen = document.getElementById('login-screen');
+        const appContent = document.getElementById('app-content');
+        const loginError = document.getElementById('login-error');
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+
+            if (user === 'Admin' && pass === '03032023') {
+                loginScreen.classList.add('hidden');
+                appContent.classList.remove('hidden');
+                loadFinanceiroData(); // Carrega os dados após o login
+            } else {
+                loginError.textContent = 'Login ou senha inválidos.';
+                setTimeout(() => { loginError.textContent = '' }, 3000);
+            }
+        });
+
+        // --- LÓGICA FINANCEIRA COM FIREBASE ---
+        let financeiro = {
+            caixa: 0,
+            vendas: 0,
+            custos: 0
+        };
+
+        const financeiroDocRef = doc(db, "bella-brownies", "financeiro");
+
+        const caixaEl = document.getElementById('caixa-atual');
+        const vendasEl = document.getElementById('total-vendas');
+        const custosEl = document.getElementById('custos-totais');
+        const entradaForm = document.getElementById('entrada-form');
+        const retiradaForm = document.getElementById('retirada-form');
+
+        async function loadFinanceiroData() {
+            const docSnap = await getDoc(financeiroDocRef);
+            if (docSnap.exists()) {
+                financeiro = docSnap.data();
+            } else {
+                // Se o documento não existe, cria com valores iniciais
+                await setDoc(financeiroDocRef, financeiro);
+            }
+            updateFinanceiroUI();
+        }
+
+        async function saveFinanceiroData() {
+            await setDoc(financeiroDocRef, financeiro);
+        }
+
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function updateFinanceiroUI() {
+            caixaEl.textContent = formatCurrency(financeiro.caixa);
+            vendasEl.textContent = formatCurrency(financeiro.vendas);
+            custosEl.textContent = formatCurrency(financeiro.custos);
+        }
+        
+        entradaForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const valor = parseFloat(document.getElementById('entrada-valor').value);
+            if (!isNaN(valor)) {
+                financeiro.caixa += valor;
+                await saveFinanceiroData();
+                updateFinanceiroUI();
+                closeModal('entradaModal');
+                entradaForm.reset();
+            }
+        });
+
+        retiradaForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const valor = parseFloat(document.getElementById('retirada-valor').value);
+            if (!isNaN(valor)) {
+                financeiro.caixa -= valor;
+                await saveFinanceiroData();
+                updateFinanceiroUI();
+                closeModal('retiradaModal');
+                retiradaForm.reset();
+            }
+        });
+
+
+        // --- LÓGICA GERAL (ABAS E MODAIS) ---
+        window.openTab = function(tabName) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+        }
+
+        window.openModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        window.closeModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        window.onclick = function(event) {
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (event.target == modal) closeModal(modal.id);
+            });
+        }
+    </script>
+</body>
+</html>
