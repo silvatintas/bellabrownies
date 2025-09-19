@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag essencial para responsividade em celulares -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bella Brownies - Controle</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,48 +19,34 @@
             background-color: var(--primary-pink);
             color: var(--text-dark);
         }
-        .font-parisienne {
-            font-family: 'Parisienne', cursive;
-        }
+        .font-parisienne { font-family: 'Parisienne', cursive; }
         .tab-button.active {
             background-color: var(--accent-brown);
             color: var(--white);
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
-        .tab-button {
-            transition: all 0.3s ease;
-        }
-        .modal {
-            transition: opacity 0.3s ease;
-        }
-        .table-header {
-            background-color: var(--secondary-pink);
-        }
+        .tab-button { transition: all 0.3s ease; }
+        .modal { transition: opacity 0.3s ease; }
+        .table-header { background-color: var(--secondary-pink); }
         .btn-primary {
             background-color: var(--accent-brown);
             color: var(--white);
             transition: background-color 0.3s ease;
         }
-        .btn-primary:hover {
-            background-color: #855a3f;
-        }
-        .input-field {
-            border-color: var(--secondary-pink);
-        }
+        .btn-primary:hover { background-color: #855a3f; }
+        .input-field { border-color: var(--secondary-pink); }
         .input-field:focus {
             border-color: var(--accent-brown);
-            ring: 1;
-            ring-color: var(--accent-brown);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(107, 66, 38, 0.2);
         }
-        /* Estilo do lacinho */
         .bow-logo {
             position: relative;
             display: inline-block;
-            font-size: 5rem; /* Ajuste o tamanho conforme necessário */
+            font-size: 5rem;
             color: var(--white);
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-
         .bow-svg {
             position: absolute;
             top: -25px;
@@ -80,17 +65,13 @@
             border-radius: 999px;
             transition: background-color 0.2s;
         }
-        .action-btn:hover {
-            background-color: rgba(0,0,0,0.1);
-        }
+        .action-btn:hover { background-color: rgba(0,0,0,0.1); }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Conteúdo Principal do App -->
     <div id="app-content" class="container mx-auto p-4 sm:p-6 lg:p-8">
 
-        <!-- Cabeçalho -->
         <header class="text-center mb-8">
             <div class="relative inline-block">
                  <svg class="bow-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M17.5,15.5c-1.04,1.04-2.43,1.62-3.89,1.62 s-2.85-0.58-3.89-1.62C8.68,14.46,8,13.28,8,12c0-1.28,0.68-2.46,1.72-3.5C10.76,7.46,12.15,6.88,13.61,6.88 s2.85,0.58,3.89,1.62c1.04,1.04,1.72,2.22,1.72,3.5C19.22,13.28,18.54,14.46,17.5,15.5z M13.61,8.88c-0.83,0-1.5,0.67-1.5,1.5 s0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5S14.44,8.88,13.61,8.88z M10.61,11.88c-0.83,0-1.5,0.67-1.5,1.5s0.67,1.5,1.5,1.5 s1.5-0.67,1.5-1.5S11.44,11.88,10.61,11.88z"/></svg>
@@ -99,20 +80,17 @@
             <p class="font-parisienne text-3xl sm:text-4xl md:text-5xl -mt-4 text-white" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">brownies</p>
         </header>
 
-        <!-- Navegação das Abas -->
         <div class="flex flex-wrap justify-center gap-2 mb-8">
-            <button class="tab-button active px-4 py-2 rounded-lg font-semibold" onclick="openTab('vendas')">Vendas</button>
-            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('estoque')">Estoque</button>
-            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('a-prazo')">A Prazo</button>
-            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('compras')">Compras</button>
-            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('producao')">Produção</button>
-            <button class="tab-button px-4 py-2 rounded-lg font-semibold" onclick="openTab('financeiro')">Financeiro</button>
+            <button data-tab="vendas" class="tab-button active px-4 py-2 rounded-lg font-semibold">Vendas</button>
+            <button data-tab="estoque" class="tab-button px-4 py-2 rounded-lg font-semibold">Estoque</button>
+            <button data-tab="a-prazo" class="tab-button px-4 py-2 rounded-lg font-semibold">A Prazo</button>
+            <button data-tab="compras" class="tab-button px-4 py-2 rounded-lg font-semibold">Compras</button>
+            <button data-tab="producao" class="tab-button px-4 py-2 rounded-lg font-semibold">Produção</button>
+            <button data-tab="financeiro" class="tab-button px-4 py-2 rounded-lg font-semibold">Financeiro</button>
         </div>
 
-        <!-- Conteúdo das Abas -->
         <main id="tab-content" class="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl shadow-lg">
             
-            <!-- Aba de Vendas -->
             <div id="vendas" class="tab-panel">
                 <h2 class="text-2xl font-bold mb-4 text-accent-brown">Registro de Vendas</h2>
                  <div class="overflow-x-auto">
@@ -130,10 +108,9 @@
                         <tbody id="vendas-table-body"></tbody>
                     </table>
                 </div>
-                <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('vendaModal')">Adicionar Venda</button>
+                <button data-modal-target="vendaModal" class="btn-primary mt-4 px-4 py-2 rounded-lg">Adicionar Venda</button>
             </div>
 
-            <!-- Aba de Estoque -->
             <div id="estoque" class="tab-panel hidden">
                 <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle de Estoque</h2>
                 <div class="bg-white/90 p-6 rounded-lg shadow text-center mb-6">
@@ -147,7 +124,7 @@
                             <tr>
                                 <th class="p-3 text-left">Data</th>
                                 <th class="p-3 text-left">Nome da Produção</th>
-                                <th class="p-3 text-left">Qtd. Restante</th>
+                                <th class="p-3 text-left">Qtd. Disponível</th>
                             </tr>
                         </thead>
                         <tbody id="estoque-table-body"></tbody>
@@ -155,7 +132,6 @@
                 </div>
             </div>
 
-            <!-- Aba a Prazo -->
             <div id="a-prazo" class="tab-panel hidden">
                 <h2 class="text-2xl font-bold mb-4 text-accent-brown">Clientes a Prazo</h2>
                  <div class="overflow-x-auto">
@@ -164,17 +140,15 @@
                             <tr>
                                 <th class="p-3 text-left">Cliente</th>
                                 <th class="p-3 text-left">Valor Devido</th>
-                                <th class="p-3 text-left">Ações</th>
-                            </tr>
+                                </tr>
                         </thead>
                         <tbody id="aprazo-table-body"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Aba de Compras -->
             <div id="compras" class="tab-panel hidden">
-                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Registro de Compras (Estoque de Ingredientes)</h2>
+                <h2 class="text-2xl font-bold mb-4 text-accent-brown">Registro de Compras (Ingredientes)</h2>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white rounded-lg shadow">
                         <thead class="table-header">
@@ -189,10 +163,9 @@
                         <tbody id="compras-table-body"></tbody>
                     </table>
                 </div>
-                <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('compraModal')">Adicionar Compra</button>
+                <button data-modal-target="compraModal" class="btn-primary mt-4 px-4 py-2 rounded-lg">Adicionar Compra</button>
             </div>
 
-            <!-- Aba de Produção -->
             <div id="producao" class="tab-panel hidden">
                 <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle de Produção</h2>
                  <div class="overflow-x-auto">
@@ -211,10 +184,9 @@
                         <tbody id="producao-table-body"></tbody>
                     </table>
                 </div>
-                <button class="btn-primary mt-4 px-4 py-2 rounded-lg" onclick="openModal('producaoModal')">Nova Produção</button>
+                <button data-modal-target="producaoModal" class="btn-primary mt-4 px-4 py-2 rounded-lg">Nova Produção</button>
             </div>
 
-            <!-- Aba Financeiro -->
             <div id="financeiro" class="tab-panel hidden">
                 <h2 class="text-2xl font-bold mb-4 text-accent-brown">Controle Financeiro</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
@@ -236,14 +208,13 @@
                     </div>
                 </div>
                  <div class="mt-6">
-                    <button class="btn-primary px-4 py-2 rounded-lg" onclick="openModal('entradaModal')">Adicionar Entrada</button>
-                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg ml-2" onclick="openModal('retiradaModal')">Registrar Retirada</button>
+                    <button data-modal-target="entradaModal" class="btn-primary px-4 py-2 rounded-lg">Adicionar Entrada</button>
+                    <button data-modal-target="retiradaModal" class="bg-red-500 text-white px-4 py-2 rounded-lg ml-2">Registrar Retirada</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Modais -->
     <div id="vendaModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-lg p-8 w-full max-w-md">
             <h3 id="venda-modal-title" class="text-xl font-bold mb-4">Nova Venda</h3>
@@ -261,7 +232,7 @@
                     <option value="A Prazo">A Prazo</option>
                 </select>
                 <div class="flex justify-end gap-4">
-                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('vendaModal')">Cancelar</button>
+                    <button type="button" data-modal-close="vendaModal" class="px-4 py-2 rounded">Cancelar</button>
                     <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
                 </div>
             </form>
@@ -279,10 +250,13 @@
                 <input id="compra-preco" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Preço Total Pago (R$)" required>
                 <div class="flex gap-4">
                     <input id="compra-quantidade" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Qtd Total" required>
-                    <input id="compra-unidade" class="w-1/3 p-2 mb-4 border rounded input-field" type="text" placeholder="unid (g, un)" required>
+                    <select id="compra-unidade" class="w-1/2 p-2 mb-4 border rounded input-field" required>
+                        <option value="g">g (gramas)</option>
+                        <option value="un">un (unidades)</option>
+                    </select>
                 </div>
                 <div class="flex justify-end gap-4">
-                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('compraModal')">Cancelar</button>
+                    <button type="button" data-modal-close="compraModal" class="px-4 py-2 rounded">Cancelar</button>
                     <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
                 </div>
             </form>
@@ -291,7 +265,7 @@
 
     <div id="producaoModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-lg p-8 w-full max-w-lg my-8">
-            <h3 id="producao-modal-title" class="text-xl font-bold mb-4">Nova Produção (1 Forma = 12 Brownies)</h3>
+            <h3 id="producao-modal-title" class="text-xl font-bold mb-4">Nova Produção</h3>
             <form id="producao-form">
                 <input type="hidden" id="producao-edit-id">
                 <input type="hidden" id="producao-old-cost">
@@ -303,113 +277,138 @@
                     <input id="producao-manteiga" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Manteiga (g)">
                     <input id="producao-acucar" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Açúcar (g)">
                     <input id="producao-farinha" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Farinha (g)">
-                    <input id="producao-ovos" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Ovos (unidades)">
-                    <input id="producao-embalagem" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Embalagens (unidades)">
+                    <input id="producao-ovos" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Ovos (un)">
+                    <input id="producao-embalagem" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Embalagens (un)">
                 </div>
                  <h4 class="font-semibold mb-2">Custos Adicionais (valor em R$):</h4>
                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <input id="producao-recheio" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Custo Recheio (total)">
                     <input id="producao-outro" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Outros Custos (R$)">
-                 </div>
-                 <h4 class="font-semibold mb-2">Preço e Perdas:</h4>
+                </div>
+                 <h4 class="font-semibold mb-2">Resultado da Produção:</h4>
                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <input id="producao-preco-venda" class="w-full p-2 border rounded input-field" type="number" step="0.01" placeholder="Preço de Venda (un)" required>
-                    <input id="producao-perdidos" class="w-full p-2 border rounded input-field" type="number" placeholder="Brownies Perdidos (un)" value="0">
-                 </div>
+                    <input id="producao-feitos" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Brownies Feitos (un)" required>
+                    <input id="producao-perdidos" class="w-full p-2 border rounded input-field" type="number" step="1" placeholder="Brownies Perdidos (un)" value="0">
+                </div>
+                 <input id="producao-preco-venda" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Preço de Venda (un)" required>
                 <div class="flex justify-end gap-4">
-                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('producaoModal')">Cancelar</button>
+                    <button type="button" data-modal-close="producaoModal" class="px-4 py-2 rounded">Cancelar</button>
                     <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal de Entrada Financeira -->
     <div id="entradaModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-lg p-8 w-full max-w-sm">
             <h3 class="text-xl font-bold mb-4">Adicionar Entrada no Caixa</h3>
             <form id="entrada-form">
                 <input id="entrada-valor" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Valor da Entrada" required>
                 <div class="flex justify-end gap-4">
-                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('entradaModal')">Cancelar</button>
+                    <button type="button" data-modal-close="entradaModal" class="px-4 py-2 rounded">Cancelar</button>
                     <button type="submit" class="btn-primary px-4 py-2 rounded">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal de Retirada Financeira -->
     <div id="retiradaModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-lg p-8 w-full max-w-sm">
             <h3 class="text-xl font-bold mb-4">Registrar Retirada do Caixa</h3>
             <form id="retirada-form">
                 <input id="retirada-valor" class="w-full p-2 mb-4 border rounded input-field" type="number" step="0.01" placeholder="Valor da Retirada" required>
                 <div class="flex justify-end gap-4">
-                    <button type="button" class="px-4 py-2 rounded" onclick="closeModal('retiradaModal')">Cancelar</button>
+                    <button type="button" data-modal-close="retiradaModal" class="px-4 py-2 rounded">Cancelar</button>
                     <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
     
-    <!-- Modal de Confirmação de Exclusão -->
     <div id="confirmDeleteModal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-lg p-8 w-full max-w-sm text-center">
             <h3 class="text-xl font-bold mb-4">Confirmar Exclusão</h3>
             <p>Você tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.</p>
             <div class="flex justify-center gap-4 mt-6">
-                <button type="button" class="px-4 py-2 rounded" onclick="closeModal('confirmDeleteModal')">Cancelar</button>
+                <button type="button" data-modal-close="confirmDeleteModal" class="px-4 py-2 rounded">Cancelar</button>
                 <button id="confirm-delete-btn" type="button" class="bg-red-500 text-white px-4 py-2 rounded">Excluir</button>
             </div>
         </div>
     </div>
 
 
-    <!-- Script do Firebase -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
+        // Importe as funções do Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, updateDoc, where, limit, getDocs, collectionGroup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-      
-        // Your web app's Firebase configuration
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, updateDoc, where, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+     
+        // =================================================================================
+        // ATENÇÃO: Substitua o objeto abaixo pelas suas próprias credenciais do Firebase.
+        // Crie um projeto novo em https://console.firebase.google.com/
+        // =================================================================================
         const firebaseConfig = {
-          apiKey: "AIzaSyDPisgGzruxqnXzf9hPlb05uCN3hMozt2s",
-          authDomain: "crm-silva-tintas.firebaseapp.com",
-          projectId: "crm-silva-tintas",
-          storageBucket: "crm-silva-tintas.firebasestorage.app",
-          messagingSenderId: "37152653096",
-          appId: "1:37152653096:web:e84f095a5d364214abda1d",
-          measurementId: "G-GNBVRGLZG2"
+          apiKey: "SEU_API_KEY",
+          authDomain: "SEU_AUTH_DOMAIN",
+          projectId: "SEU_PROJECT_ID",
+          storageBucket: "SEU_STORAGE_BUCKET",
+          messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+          appId: "SEU_APP_ID"
         };
-      
-        // Initialize Firebase
+     
+        // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
-        // --- LÓGICA FINANCEIRA COM FIREBASE ---
-        let financeiro = { caixa: 525, vendas: 0, custos: 0 };
-        const financeiroDocRef = doc(db, "bella-brownies", "financeiro");
-        const caixaEl = document.getElementById('caixa-atual');
-        const vendasEl = document.getElementById('total-vendas');
-        const custosEl = document.getElementById('custos-totais');
-        const lucroEl = document.getElementById('lucro-total');
-        const entradaForm = document.getElementById('entrada-form');
-        const retiradaForm = document.getElementById('retirada-form');
+        // Variável para guardar o ID do usuário
+        let userId;
+
+        // --- LÓGICA DE AUTENTICAÇÃO ANÔNIMA E INICIALIZAÇÃO ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuário está logado, guardamos o UID dele
+                userId = user.uid;
+                initializeAppLogic();
+            } else {
+                // Usuário não está logado, faz o login anônimo
+                signInAnonymously(auth).catch((error) => {
+                    console.error("Falha no login anônimo:", error);
+                    alert("Não foi possível conectar ao banco de dados. Por favor, recarregue a página.");
+                });
+            }
+        });
+
+        function initializeAppLogic() {
+            // Só executa a lógica do app depois de ter o userId
+            if (!userId) return;
+            
+            loadFinanceiroData(); 
+            listenToCompras();
+            listenToProducao();
+            listenToVendas();
+            setupEventListeners();
+        }
+
+        // --- LÓGICA FINANCEIRA ---
+        let financeiro = { caixa: 0, vendas: 0, custos: 0 };
+        const getFinanceiroDocRef = () => doc(db, "users", userId, "financeiro", "summary");
 
         async function loadFinanceiroData() {
-            const docSnap = await getDoc(financeiroDocRef);
+            const docSnap = await getDoc(getFinanceiroDocRef());
             if (docSnap.exists()) {
                 financeiro = docSnap.data();
             } else {
-                await setDoc(financeiroDocRef, financeiro);
+                // Se não existe, cria o documento inicial
+                await setDoc(getFinanceiroDocRef(), financeiro);
             }
             updateFinanceiroUI();
         }
 
         async function saveFinanceiroData() {
-            await setDoc(financeiroDocRef, financeiro);
+            await setDoc(getFinanceiroDocRef(), financeiro);
         }
-
+        
         function formatCurrency(value) {
             if (typeof value !== 'number') return 'R$ 0,00';
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -422,13 +421,13 @@
 
         function updateFinanceiroUI() {
             const lucro = financeiro.vendas - financeiro.custos;
-            caixaEl.textContent = formatCurrency(financeiro.caixa);
-            vendasEl.textContent = formatCurrency(financeiro.vendas);
-            custosEl.textContent = formatCurrency(financeiro.custos);
-            lucroEl.textContent = formatCurrency(lucro);
+            document.getElementById('caixa-atual').textContent = formatCurrency(financeiro.caixa);
+            document.getElementById('total-vendas').textContent = formatCurrency(financeiro.vendas);
+            document.getElementById('custos-totais').textContent = formatCurrency(financeiro.custos);
+            document.getElementById('lucro-total').textContent = formatCurrency(lucro);
         }
         
-        entradaForm.addEventListener('submit', async function(event) {
+        document.getElementById('entrada-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const valor = parseFloat(document.getElementById('entrada-valor').value);
             if (!isNaN(valor)) {
@@ -436,11 +435,10 @@
                 await saveFinanceiroData();
                 updateFinanceiroUI();
                 closeModal('entradaModal');
-                entradaForm.reset();
             }
         });
 
-        retiradaForm.addEventListener('submit', async function(event) {
+        document.getElementById('retirada-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const valor = parseFloat(document.getElementById('retirada-valor').value);
             if (!isNaN(valor)) {
@@ -448,20 +446,18 @@
                 await saveFinanceiroData();
                 updateFinanceiroUI();
                 closeModal('retiradaModal');
-                retiradaForm.reset();
             }
         });
 
         // --- LÓGICA DE COMPRAS ---
         const compraForm = document.getElementById('compra-form');
-        const comprasTableBody = document.getElementById('compras-table-body');
-        const comprasCollectionRef = collection(db, "compras");
+        const getComprasCollectionRef = () => collection(db, "users", userId, "compras");
 
         compraForm.addEventListener('submit', async (event) => {
             event.preventDefault(); 
             const preco = parseFloat(document.getElementById('compra-preco').value);
             const quantidade = parseFloat(document.getElementById('compra-quantidade').value);
-            const custoPorUnidade = preco / quantidade;
+            const custoPorUnidade = (quantidade > 0) ? preco / quantidade : 0;
             const editId = document.getElementById('compra-edit-id').value;
 
             const data = {
@@ -476,11 +472,11 @@
             try {
                 if (editId) {
                     const oldPrice = parseFloat(document.getElementById('compra-old-price').value);
-                    const docRef = doc(db, "compras", editId);
+                    const docRef = doc(db, "users", userId, "compras", editId);
                     await updateDoc(docRef, data);
                     financeiro.custos = (financeiro.custos - oldPrice) + preco;
                 } else {
-                    await addDoc(comprasCollectionRef, data);
+                    await addDoc(getComprasCollectionRef(), data);
                     financeiro.custos += preco;
                 }
                 
@@ -489,12 +485,14 @@
                 closeModal('compraModal');
             } catch (e) {
                 console.error("Erro ao salvar compra: ", e);
+                alert("Ocorreu um erro ao salvar a compra.");
             }
         });
 
         function listenToCompras() {
-            const q = query(comprasCollectionRef, orderBy("data", "desc"));
+            const q = query(getComprasCollectionRef(), orderBy("data", "desc"));
             onSnapshot(q, (snapshot) => {
+                const comprasTableBody = document.getElementById('compras-table-body');
                 let comprasHtml = '';
                 snapshot.forEach((doc) => {
                     const compra = doc.data();
@@ -506,11 +504,11 @@
                             <td class="p-3">${formatCostPerUnit(compra.custoPorUnidade, compra.unidade)}</td>
                             <td class="p-3">${formatCurrency(compra.precoTotal)}</td>
                             <td class="p-3 flex gap-2">
-                                <button class="action-btn" onclick="window.openCompraEditModal('${docId}')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
+                                <button class="action-btn" data-action="edit" data-collection="compras" data-id="${docId}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="pointer-events: none;"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
                                 </button>
-                                <button class="action-btn" onclick="window.requestDelete('compras', '${docId}', ${compra.precoTotal})">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
+                                <button class="action-btn" data-action="delete" data-collection="compras" data-id="${docId}" data-cost="${compra.precoTotal}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16" style="pointer-events: none;"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
                                 </button>
                             </td>
                         </tr>
@@ -520,8 +518,8 @@
             });
         }
         
-        window.openCompraEditModal = async (id) => {
-            const docRef = doc(db, "compras", id);
+        async function openCompraEditModal(id) {
+            const docRef = doc(db, "users", userId, "compras", id);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
@@ -539,8 +537,7 @@
 
         // --- LÓGICA DE PRODUÇÃO ---
         const producaoForm = document.getElementById('producao-form');
-        const producaoTableBody = document.getElementById('producao-table-body');
-        const producaoCollectionRef = collection(db, "producao");
+        const getProducaoCollectionRef = () => collection(db, "users", userId, "producao");
         
         const INGREDIENTES_MAP = {
             chocolate: { queryName: 'Chocolate', id: 'producao-chocolate' },
@@ -553,7 +550,7 @@
 
         async function getCustoIngrediente(nome, qtdUsada) {
             if (!nome || !qtdUsada || qtdUsada <= 0) return 0;
-            const q = query(collection(db, "compras"), where("produto", "==", nome));
+            const q = query(getComprasCollectionRef(), where("produto", "==", nome), orderBy("data", "desc"));
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
@@ -561,10 +558,8 @@
                  return 0;
             }
             
-            const compras = querySnapshot.docs.map(doc => doc.data());
-            compras.sort((a, b) => new Date(b.data) - new Date(a.data));
-            
-            const compraRecente = compras[0];
+            // Pega a compra mais recente para o cálculo de custo
+            const compraRecente = querySnapshot.docs[0].data();
             return compraRecente.custoPorUnidade * qtdUsada;
         }
 
@@ -584,11 +579,12 @@
                     ingredientesUsados.push({ nome: key, qtd: qtd, queryName: ing.queryName });
                 }
             }
-
+            
+            const browniesFeitos = parseInt(document.getElementById('producao-feitos').value) || 0;
             const custoRecheio = parseFloat(document.getElementById('producao-recheio').value) || 0;
             const custoOutro = parseFloat(document.getElementById('producao-outro').value) || 0;
             const custoTotalProducao = custoIngredientes + custoRecheio + custoOutro;
-            const custoUnitario = custoTotalProducao / 12;
+            const custoUnitario = (browniesFeitos > 0) ? custoTotalProducao / browniesFeitos : 0;
 
             const data = {
                 data: document.getElementById('producao-data').value,
@@ -597,7 +593,7 @@
                 perdidos: parseInt(document.getElementById('producao-perdidos').value) || 0,
                 custoUnitario: custoUnitario,
                 custoTotal: custoTotalProducao,
-                browniesFeitos: 12,
+                browniesFeitos: browniesFeitos,
                 ingredientesUsados: ingredientesUsados,
                 custosAdicionais: { recheio: custoRecheio, outro: custoOutro }
             };
@@ -605,11 +601,11 @@
             try {
                 if (editId) {
                     const oldCost = parseFloat(document.getElementById('producao-old-cost').value);
-                    const docRef = doc(db, "producao", editId);
+                    const docRef = doc(db, "users", userId, "producao", editId);
                     await updateDoc(docRef, data);
                     financeiro.custos = (financeiro.custos - oldCost) + custoTotalProducao;
                 } else {
-                    await addDoc(producaoCollectionRef, data);
+                    await addDoc(getProducaoCollectionRef(), data);
                     financeiro.custos += custoTotalProducao;
                 }
                 
@@ -618,15 +614,18 @@
                 closeModal('producaoModal');
             } catch(e) {
                 console.error("Erro ao salvar produção: ", e);
+                alert("Ocorreu um erro ao salvar a produção.");
             }
         });
 
         function listenToProducao() {
-            const q = query(producaoCollectionRef, orderBy("data", "desc"));
+            const q = query(getProducaoCollectionRef(), orderBy("data", "desc"));
             onSnapshot(q, (snapshot) => {
+                const producaoTableBody = document.getElementById('producao-table-body');
                 let producaoHtml = '';
-                snapshot.forEach((doc) => {
-                    const p = doc.data();
+                const producoes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                producoes.forEach((p) => {
                     producaoHtml += `
                         <tr class="border-b border-gray-200">
                             <td class="p-3">${new Date(p.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
@@ -636,11 +635,11 @@
                             <td class="p-3">${formatCurrency(p.precoVenda)}</td>
                             <td class="p-3">${p.perdidos}</td>
                             <td class="p-3 flex gap-2">
-                                <button class="action-btn" onclick="window.openProducaoEditModal('${doc.id}')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
+                                <button class="action-btn" data-action="edit" data-collection="producao" data-id="${p.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="pointer-events: none;"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
                                 </button>
-                                <button class="action-btn" onclick="window.requestDelete('producao', '${doc.id}', ${p.custoTotal})">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
+                                <button class="action-btn" data-action="delete" data-collection="producao" data-id="${p.id}" data-cost="${p.custoTotal}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16" style="pointer-events: none;"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
                                 </button>
                             </td>
                         </tr>
@@ -650,8 +649,8 @@
             });
         }
         
-        window.openProducaoEditModal = async (id) => {
-            const docRef = doc(db, "producao", id);
+        async function openProducaoEditModal(id) {
+            const docRef = doc(db, "users", userId, "producao", id);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const p = docSnap.data();
@@ -669,6 +668,7 @@
                 });
                 document.getElementById('producao-recheio').value = p.custosAdicionais.recheio || '';
                 document.getElementById('producao-outro').value = p.custosAdicionais.outro || '';
+                document.getElementById('producao-feitos').value = p.browniesFeitos;
                 document.getElementById('producao-preco-venda').value = p.precoVenda;
                 document.getElementById('producao-perdidos').value = p.perdidos;
                 openModal('producaoModal');
@@ -677,8 +677,7 @@
 
         // --- LÓGICA DE VENDAS ---
         const vendaForm = document.getElementById('venda-form');
-        const vendasTableBody = document.getElementById('vendas-table-body');
-        const vendasCollectionRef = collection(db, "vendas");
+        const getVendasCollectionRef = () => collection(db, "users", userId, "vendas");
 
         vendaForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -706,11 +705,11 @@
                     financeiro.vendas += total;
                     if (pagamento !== 'A Prazo') financeiro.caixa += total;
                     
-                    const docRef = doc(db, "vendas", editId);
+                    const docRef = doc(db, "users", userId, "vendas", editId);
                     await updateDoc(docRef, data);
 
                 } else {
-                    await addDoc(vendasCollectionRef, data);
+                    await addDoc(getVendasCollectionRef(), data);
                     financeiro.vendas += total;
                     if (pagamento !== 'A Prazo') {
                         financeiro.caixa += total;
@@ -722,15 +721,18 @@
                 closeModal('vendaModal');
             } catch (e) {
                 console.error("Erro ao salvar venda: ", e);
+                alert("Ocorreu um erro ao salvar a venda.");
             }
         });
 
         function listenToVendas() {
-            const q = query(vendasCollectionRef, orderBy("data", "desc"));
+            const q = query(getVendasCollectionRef(), orderBy("data", "desc"));
             onSnapshot(q, (snapshot) => {
+                const vendasTableBody = document.getElementById('vendas-table-body');
                 let vendasHtml = '';
-                snapshot.forEach((doc) => {
-                    const v = doc.data();
+                const vendas = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                vendas.forEach((v) => {
                     vendasHtml += `
                         <tr class="border-b border-gray-200">
                             <td class="p-3">${new Date(v.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
@@ -739,22 +741,25 @@
                             <td class="p-3">${v.pagamento}</td>
                             <td class="p-3">${formatCurrency(v.total)}</td>
                             <td class="p-3 flex gap-2">
-                                <button class="action-btn" onclick="window.openVendaEditModal('${doc.id}')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
+                                <button class="action-btn" data-action="edit" data-collection="vendas" data-id="${v.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="pointer-events: none;"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
                                 </button>
-                                <button class="action-btn" onclick="window.requestDelete('vendas', '${doc.id}', null, ${v.total}, '${v.pagamento}')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
+                                <button class="action-btn" data-action="delete" data-collection="vendas" data-id="${v.id}" data-total-venda="${v.total}" data-pagamento="${v.pagamento}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-red-500" viewBox="0 0 16 16" style="pointer-events: none;"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
                                 </button>
                             </td>
                         </tr>
                     `;
                 });
                 vendasTableBody.innerHTML = vendasHtml;
+
+                // Após renderizar a tabela de vendas, atualiza o estoque e a aba "A Prazo"
+                updateEstoqueAndAPrazo();
             });
         }
         
-        window.openVendaEditModal = async (id) => {
-            const docRef = doc(db, "vendas", id);
+        async function openVendaEditModal(id) {
+            const docRef = doc(db, "users", userId, "vendas", id);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const v = docSnap.data();
@@ -771,49 +776,74 @@
             }
         };
 
-        // --- LÓGICA DE ESTOQUE ---
-        async function updateEstoque() {
-            const producaoSnapshot = await getDocs(collection(db, "producao"));
+        // --- LÓGICA DE ESTOQUE E A PRAZO (COMBINADA PARA EFICIÊNCIA) ---
+        async function updateEstoqueAndAPrazo() {
+            // Pega todos os dados de produção e vendas de uma vez
+            const producaoSnapshot = await getDocs(getProducaoCollectionRef());
+            const vendasSnapshot = await getDocs(getVendasCollectionRef());
+
+            // --- Lógica de Estoque ---
             let totalProduzido = 0;
             let totalPerdido = 0;
+            const producoes = [];
             producaoSnapshot.forEach(doc => {
-                totalProduzido += doc.data().browniesFeitos;
-                totalPerdido += doc.data().perdidos;
+                const p = doc.data();
+                totalProduzido += p.browniesFeitos;
+                totalPerdido += p.perdidos;
+                producoes.push(p);
             });
 
-            const vendasSnapshot = await getDocs(collection(db, "vendas"));
             let totalVendido = 0;
             vendasSnapshot.forEach(doc => {
                 totalVendido += doc.data().quantidade;
             });
 
-            const estoqueAtual = totalProduzido - totalPerdido - totalVendido;
+            const estoqueAtual = totalProduzido - totalVendido;
             document.getElementById('estoque-total').innerText = estoqueAtual;
 
-            // Tabela de estoque por produção (simplificado)
             let estoqueHtml = '';
-            producaoSnapshot.docs.sort((a,b) => new Date(b.data().data) - new Date(a.data().data)).forEach(doc => {
-                const p = doc.data();
-                // Esta é uma simplificação. Um sistema FIFO real seria mais complexo.
-                // Por enquanto, apenas listamos as produções.
+            producoes.sort((a,b) => new Date(b.data) - new Date(a.data)).forEach(p => {
                  estoqueHtml += `
-                        <tr class="border-b border-gray-200">
-                            <td class="p-3">${new Date(p.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
-                            <td class="p-3">${p.nome}</td>
-                            <td class="p-3">${p.browniesFeitos - p.perdidos} (Disponíveis desta fornada)</td>
-                        </tr>
-                    `;
+                    <tr class="border-b border-gray-200">
+                        <td class="p-3">${new Date(p.data + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                        <td class="p-3">${p.nome}</td>
+                        <td class="p-3">${p.browniesFeitos - p.perdidos}</td>
+                    </tr>
+                `;
             });
             document.getElementById('estoque-table-body').innerHTML = estoqueHtml;
-        }
 
+            // --- Lógica "A Prazo" ---
+            const aPrazo = {};
+            vendasSnapshot.forEach(doc => {
+                const v = doc.data();
+                if (v.pagamento === 'A Prazo') {
+                    if (!aPrazo[v.cliente]) {
+                        aPrazo[v.cliente] = 0;
+                    }
+                    aPrazo[v.cliente] += v.total;
+                }
+            });
+
+            const aprazoTableBody = document.getElementById('aprazo-table-body');
+            let aprazoHtml = '';
+            for (const cliente in aPrazo) {
+                aprazoHtml += `
+                    <tr class="border-b border-gray-200">
+                        <td class="p-3">${cliente}</td>
+                        <td class="p-3">${formatCurrency(aPrazo[cliente])}</td>
+                    </tr>
+                `;
+            }
+            aprazoTableBody.innerHTML = aprazoHtml;
+        }
 
         // --- LÓGICA DE EXCLUSÃO ---
         const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
         let deleteInfo = {};
 
-        window.requestDelete = (collectionName, docId, cost, totalVenda, pagamento) => {
-            deleteInfo = { collectionName, docId, cost, totalVenda, pagamento };
+        function requestDelete(info) {
+            deleteInfo = info;
             openModal('confirmDeleteModal');
         };
 
@@ -822,7 +852,7 @@
             if (!collectionName || !docId) return;
 
             try {
-                await deleteDoc(doc(db, collectionName, docId));
+                await deleteDoc(doc(db, "users", userId, collectionName, docId));
                 if (cost) { // Exclusão de compra ou produção
                     financeiro.custos -= cost;
                 }
@@ -837,49 +867,45 @@
                 closeModal('confirmDeleteModal');
             } catch (e) {
                 console.error("Erro ao excluir: ", e);
+                alert("Ocorreu um erro ao excluir o item.");
             }
         });
 
-        // --- INICIALIZAÇÃO ---
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFinanceiroData(); 
-            listenToCompras();
-            listenToProducao();
-            listenToVendas();
-            onSnapshot(collectionGroup(db, 'vendas'), updateEstoque);
-            onSnapshot(collectionGroup(db, 'producao'), updateEstoque);
-        });
-
-
-        // --- LÓGICA GERAL (ABAS E MODAIS) ---
-        window.openTab = function(tabName) {
+        // --- LÓGICA GERAL (ABAS, MODAIS, EVENTOS) ---
+        function openTab(tabName) {
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabName).classList.remove('hidden');
-            event.currentTarget.classList.add('active');
+            document.querySelector(`.tab-button[data-tab="${tabName}"]`).classList.add('active');
         }
 
-        window.openModal = function(modalId) {
+        function openModal(modalId) {
+            // Limpa formulários ao abrir
             const formIds = {
-                'vendaModal': 'venda-form',
-                'compraModal': 'compra-form',
-                'producaoModal': 'producao-form'
+                'vendaModal': 'venda-form', 'compraModal': 'compra-form',
+                'producaoModal': 'producao-form', 'entradaModal': 'entrada-form',
+                'retiradaModal': 'retirada-form'
             };
             if (formIds[modalId]) {
-                document.getElementById(formIds[modalId]).reset();
+                const form = document.getElementById(formIds[modalId]);
+                form.reset();
+                // Define data atual para campos de data
+                const dateInput = form.querySelector('input[type="date"]');
+                if (dateInput) {
+                    dateInput.value = new Date().toISOString().split('T')[0];
+                }
             }
 
-            if (modalId === 'compraModal') {
-                document.getElementById('compra-modal-title').innerText = "Nova Compra";
-                document.getElementById('compra-edit-id').value = '';
-            }
-            if (modalId === 'producaoModal') {
-                document.getElementById('producao-modal-title').innerText = "Nova Produção";
-                document.getElementById('producao-edit-id').value = '';
-            }
-             if (modalId === 'vendaModal') {
-                document.getElementById('venda-modal-title').innerText = "Nova Venda";
-                document.getElementById('venda-edit-id').value = '';
+            // Reseta títulos e IDs de edição
+            const titles = {
+                'compraModal': 'compra-modal-title', 'producaoModal': 'producao-modal-title', 'vendaModal': 'venda-modal-title'
+            };
+            const editIds = {
+                'compraModal': 'compra-edit-id', 'producaoModal': 'producao-edit-id', 'vendaModal': 'venda-edit-id'
+            };
+            if(titles[modalId]) {
+                document.getElementById(titles[modalId]).innerText = titles[modalId].includes('venda') ? "Nova Venda" : (titles[modalId].includes('compra') ? "Nova Compra" : "Nova Produção");
+                document.getElementById(editIds[modalId]).value = '';
             }
             
             const modal = document.getElementById(modalId);
@@ -887,15 +913,58 @@
             modal.classList.add('flex');
         }
 
-        window.closeModal = function(modalId) {
+        function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
-        
-        window.onclick = function(event) {
-            document.querySelectorAll('.modal').forEach(modal => {
-                if (event.target == modal) closeModal(modal.id);
+
+        function setupEventListeners() {
+            // Navegação por Abas
+            document.querySelector('.flex.flex-wrap.justify-center').addEventListener('click', (event) => {
+                if (event.target.matches('.tab-button')) {
+                    openTab(event.target.dataset.tab);
+                }
+            });
+
+            // Abrir Modais
+            document.querySelectorAll('[data-modal-target]').forEach(button => {
+                button.addEventListener('click', () => {
+                    openModal(button.dataset.modalTarget);
+                });
+            });
+
+            // Fechar Modais (botão cancelar e clique fora)
+            document.body.addEventListener('click', (event) => {
+                if (event.target.hasAttribute('data-modal-close')) {
+                    closeModal(event.target.dataset.modalClose);
+                }
+                if (event.target.matches('.modal')) {
+                    closeModal(event.target.id);
+                }
+            });
+
+            // Event Delegation para botões de Editar e Excluir
+            document.getElementById('tab-content').addEventListener('click', async (event) => {
+                const button = event.target.closest('.action-btn');
+                if (!button) return;
+
+                const { action, collection, id } = button.dataset;
+
+                if (action === 'edit') {
+                    if (collection === 'compras') await openCompraEditModal(id);
+                    if (collection === 'producao') await openProducaoEditModal(id);
+                    if (collection === 'vendas') await openVendaEditModal(id);
+                } else if (action === 'delete') {
+                    const deleteData = {
+                        collectionName: collection,
+                        docId: id,
+                        cost: parseFloat(button.dataset.cost) || null,
+                        totalVenda: parseFloat(button.dataset.totalVenda) || null,
+                        pagamento: button.dataset.pagamento || null
+                    };
+                    requestDelete(deleteData);
+                }
             });
         }
     </script>
